@@ -21,14 +21,14 @@ export default class SocketLoader {
             items.forEach(item => {
                 if (item.enabled) {
                     if (item.handler instanceof Array) {
-                        socket.on(item.event, function () {
+                        socket.on(item.event, (params) => {
                             item.handler.forEach(i => {
-                                i.handler.bind({ server: this.server, socket: socket }).call(null, params)
+                                i.handler.bind(Object.assign(this, { server: this.server, socket: socket })).call(null, params)
                             })
                         });
                     } else {
                         socket.on(item.event, (params) => {
-                            item.handler.bind({ server: this.server, socket: socket }).call(null, params)
+                            item.handler.bind(Object.assign(this, { server: this.server, socket: socket })).call(null, params)
                         });
                     }
                 }

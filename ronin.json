@@ -1,5 +1,11 @@
 {
-  "models": [],
+  "models": [
+    {
+      "name": "user",
+      "path": "src/app/models/user.js",
+      "createdAt": "2020-03-18T02:09:24.282Z"
+    }
+  ],
   "migrations": {
     "order": [],
     "up": [],

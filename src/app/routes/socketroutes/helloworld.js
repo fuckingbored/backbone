@@ -4,7 +4,7 @@ const Helloworld = {
     handler: 
       function (message) {
         console.log(message)
-        this.server.emit('message', "New User Connected!");
+        this.server.emit('message', message);
       }
   };
   
