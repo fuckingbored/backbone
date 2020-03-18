@@ -23,13 +23,15 @@ export default class RouteLoader {
     this.opts = {
       dir: opts.dir
         ? opts.dir
-        : path.join(__dirname, "../../routes/HTTPRoutes"),
+        : path.join(__dirname, "../../app/routes/httproutes"),
       verbose: opts.verbose ? opts.verbose : true,
       strict: opts.strict ? opts.strict : false
     };
 
     if (opts.binds) this.binds = opts.binds;
     this.loadedRoutes = [];
+
+    this.loadDir();
   }
 
   loadObject(routeObject) {
@@ -123,9 +125,7 @@ export default class RouteLoader {
     //check if dir exists
     if (!dir && !this.opts.dir) {
       throw new Error(`HTTPRouteLoader Error: No directory specified`);
-      return;
     }
-
     //load objects
     glob.sync(dir ? dir + "/**/*.js" : this.opts.dir + "/**/*.js").forEach(
       function(file) {

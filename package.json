@@ -1,7 +1,7 @@
 {
-  "name": "ronin-starter",
+  "name": "backbone",
   "version": "1.0.0",
-  "description": "backend",
+  "description": "https://github.com/fuckingbored/backbone.git",
   "main": "index.js",
   "repository": "https://github.com/Squishy123/ronin-starter.git",
   "author": "squishy123 <christian.gnaw@gmail.com>",
@@ -13,7 +13,8 @@
     "custom-env": "^1.0.2",
     "express": "^4.17.1",
     "jest": "^24.8.0",
-    "mongoose": "^5.8.1"
+    "mongoose": "^5.8.1",
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.5",
