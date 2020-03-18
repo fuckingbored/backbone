@@ -40,11 +40,6 @@ server.use(bodyParser.json());
     });
 
     let socketLoader = new SocketLoader(io);
-    io.on('connection', socket => {
-      socket.on('helloworld', () => {
-        console.log("hello world");
-      })
-    })
 
     http.listen(process.env.PORT || 3000, function() {
       console.log(
