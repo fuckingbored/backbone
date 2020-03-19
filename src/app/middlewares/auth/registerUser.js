@@ -15,7 +15,10 @@ async function registerUser(req, res) {
                 if (err)
                     reject(err);
 
-                resolve(result.user);
+                if (result.user)
+                    resolve(result.user);
+                else 
+                    reject(new Error("Failed to register user"));
             })
     });
 
