@@ -16,7 +16,13 @@ export default class SocketLoader {
         if (!dir) {
             throw new Error(`SocketLoader Error: No directory specified`)
         }
-        let items = glob.sync(`${dir}/**/*.js`).map(file => require(file).default);
+        
+        let items = glob.sync(`${dir}/**/*.js`).map(file => {
+            let item = require(file).default;
+            console.log(`Success: Added new SOCKET route ${item.event}`);
+            return item;
+        });
+
         this.server.on('connection', function (socket) {
             items.forEach(item => {
                 if (item.enabled) {
@@ -32,7 +38,6 @@ export default class SocketLoader {
                         });
                     }
                 }
-                console.log(`Success: Added new SOCKET route ${item.event}`);
             });
         });
 

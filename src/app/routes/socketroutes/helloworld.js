@@ -4,6 +4,7 @@ const Helloworld = {
     handler: 
       function (message) {
         console.log(message)
+        console.log(`SOCKETID ${this.socket.id}`);
         this.server.emit('message', message);
       }
   };

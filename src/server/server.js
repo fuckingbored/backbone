@@ -2,11 +2,15 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const bodyParser = require("body-parser");
+const AmazonCognitoIdentity = require("amazon-cognito-identity-js");
+global.fetch = require("node-fetch");
+global.navigator = () => null;
 
 import RouteLoader from "./modules/routeLoader";
 import SocketLoader from "./modules/socketLoader";
 import connectMongo from "./modules/connectMongo";
 import initEmailTransporter from "./modules/initEmailTransporter";
+import getJwks from "./modules/getJwks";
 
 //load env vars
 if (process.env.NODE_ENV == "development") require("custom-env").env("dev");
@@ -24,10 +28,29 @@ server.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 server.use(bodyParser.json());
 
+//load cognito auth information
+const cognitoPoolData = {
+  UserPoolId: process.env.COGNITO_USER_POOL_ID,
+  ClientId: process.env.COGNITO_CLIENT_ID
+};
+
+//init cognito userpool
+const userPool = new AmazonCognitoIdentity.CognitoUserPool(cognitoPoolData);
+
+const cognitoData = {
+  userPool: userPool,
+  poolRegion: `ca-central-1`,
+  poolData: cognitoPoolData
+};
+
 (async function() {
   try {
     //connect to mongodb
     //await connectMongo();
+
+     //get jwks
+     let jwks = await getJwks(cognitoData);
+     Object.assign(cognitoData, {keys: jwks.keys});
 
     //load all routes
     let routeLoader = new RouteLoader(server, {
@@ -35,6 +58,7 @@ server.use(bodyParser.json());
       verbose: true,
       strict: true,
       binds: {
+        cognitoData
         //emailTransporter: initEmailTransporter()
       }
     });
